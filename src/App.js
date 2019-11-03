@@ -22,20 +22,30 @@ class FormApp extends Component{
 
   binaryHundleInput({target: {value} }){
     console.log('binaryHundleInput: ' + value)
+    let val = value.replace(/[^01]*/g, '')
     this.setState({
-      binaryText: value.replace(/[^01]*/g, '')
+      binaryText: val,
+      decimalText: parseInt(val, 2).toString(10),
+      hexadecimalText: parseInt(val, 2).toString(16).toUpperCase()
     });
   }
   decimalHundleInput({target: {value} }){
     console.log('binaryHundleInput')
+    let val = value.replace(/[^0-9]*/g, '')
+    
     this.setState({
-      decimalText: value.replace(/[^0-9]*/g, '')
+      binaryText: parseInt(val, 10).toString(2),
+      decimalText: val,
+      hexadecimalText: parseInt(val, 10).toString(16).toUpperCase()
     });
   }
   hexadecimalHundleInput({target: {value} }){
     console.log('binaryHundleInput')
+    let val = value.replace(/[^0-9A-Fa-f]*/g, '')
     this.setState({
-      hexadecimalText: value.replace(/[^0-9A-Fa-f]*/g, '')
+      binaryText: parseInt(val, 16).toString(2),
+      decimalText: parseInt(val, 16).toString(10),
+      hexadecimalText: val.toUpperCase()
     });
   }
 
