@@ -14,32 +14,46 @@ class FormApp extends Component{
 
     this.state = {
       value: '',
-      message: ''
+      binaryText: '',
+      decimalText: '',
+      hexadecimalText: ''
     }
   }
 
-  hundleInput({target: {value} }){
-    console.log('hundle input!')
+  binaryHundleInput({target: {value} }){
+    console.log('binaryHundleInput: ' + value)
     this.setState({
-      value
+      binaryText: value.replace(/[^01]*/g, '')
     });
   }
-
-  send(){
-    console.log('button pushed!')
-    const {value} = this.state;
+  decimalHundleInput({target: {value} }){
+    console.log('binaryHundleInput')
     this.setState({
-      value: '',
-      message: value
-    })
+      decimalText: value.replace(/[^0-9]*/g, '')
+    });
+  }
+  hexadecimalHundleInput({target: {value} }){
+    console.log('binaryHundleInput')
+    this.setState({
+      hexadecimalText: value.replace(/[^0-9A-Fa-f]*/g, '')
+    });
   }
 
   render(){
     return (
       <div>
-        <input type="text" value={this.state.value} onChange={this.hundleInput.bind(this)}/>
-        <button onClick={this.send.bind(this)}>button</button>
-        <div>{this.state.message}</div>
+        <div>
+          <p>Binary: </p>
+          <input type="text" value={this.state.binaryText} onChange={this.binaryHundleInput.bind(this)}/>
+        </div>
+        <div>
+          <p>Decimal: </p>
+          <input type="text" value={this.state.decimalText} pattern="[0-9]*" onChange={this.decimalHundleInput.bind(this)}/>
+        </div>
+        <div>
+          <p>Hexadecimal: </p>
+          <input type="text" value={this.state.hexadecimalText} pattern="[0-9A-Fa-f]*" onChange={this.hexadecimalHundleInput.bind(this)}/>
+        </div>
       </div>
     );
   }
