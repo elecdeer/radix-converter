@@ -71,17 +71,15 @@ class FormApp extends Component{
   }
 }
 
-class NumberForm extends React.Component{
-
-  render(){
-    return (
-      <input 
-        type="text"
-        value={this.props.value}
-        onChange={this.props.onChange}
-      />
-    )
-  }
+function NumberForm(props){
+  return (
+    <input 
+      type="text"
+      value={props.value}
+      onChange={props.onChange}
+    />
+  );
 }
+
 
 export default App;
