@@ -4,6 +4,8 @@ class App extends Component {
   render() {
     return (
       <FormApp />
+      //TODO
+      //各基数ごとにコンポーネントで分ける
     );
   }
 }
@@ -11,6 +13,7 @@ class App extends Component {
 class FormApp extends Component{
   constructor(props){
     super(props);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       value: '',
@@ -20,52 +23,64 @@ class FormApp extends Component{
     }
   }
 
-  binaryHundleInput({target: {value} }){
-    console.log('binaryHundleInput: ' + value)
-    let val = value.replace(/[^01]*/g, '')
-    this.setState({
-      binaryText: val,
-      decimalText: parseInt(val, 2).toString(10),
-      hexadecimalText: parseInt(val, 2).toString(16).toUpperCase()
-    });
-  }
-  decimalHundleInput({target: {value} }){
-    console.log('binaryHundleInput')
-    let val = value.replace(/[^0-9]*/g, '')
+  handleChange(value, cardinal, inputreg){
     
+    console.log("val:" + value);
+    let regex = "/[^" + inputreg + "]*/g";
+    let normalizedVal = value.replace(regex, '');
+    console.log("reg:" + regex);
+    console.log("normVal:" + normalizedVal);
+    console.log("cardinal:" + cardinal);
+    let [binary, decimal, hexadecimal] = this.convertCardinal(normalizedVal, cardinal);
     this.setState({
-      binaryText: parseInt(val, 10).toString(2),
-      decimalText: val,
-      hexadecimalText: parseInt(val, 10).toString(16).toUpperCase()
-    });
-  }
-  hexadecimalHundleInput({target: {value} }){
-    console.log('binaryHundleInput')
-    let val = value.replace(/[^0-9A-Fa-f]*/g, '')
-    this.setState({
-      binaryText: parseInt(val, 16).toString(2),
-      decimalText: parseInt(val, 16).toString(10),
-      hexadecimalText: val.toUpperCase()
+      binaryText: binary,
+      decimalText: decimal,
+      hexadecimalText: hexadecimal
     });
   }
 
+  convertCardinal(number, cardinal){
+    let i = parseInt(number, cardinal);
+    if(Number.isNaN(i)){
+      return ['', '', '']
+    }
+    let binary = i.toString(2);
+    let decimal = i.toString(10);
+    let hexadecimal = i.toString(16).toUpperCase();
+    return [binary, decimal, hexadecimal]
+  }
+
+//
   render(){
     return (
       <div>
         <div>
           <p>Binary: </p>
-          <input type="text" value={this.state.binaryText} onChange={this.binaryHundleInput.bind(this)}/>
+          <NumberForm value={this.state.binaryText} onChange={event => {this.handleChange(event.target.value, 2, "01")}} />
         </div>
         <div>
           <p>Decimal: </p>
-          <input type="text" value={this.state.decimalText} pattern="[0-9]*" onChange={this.decimalHundleInput.bind(this)}/>
+          <NumberForm value={this.state.decimalText} onChange={event => {this.handleChange(event.target.value, 10, "0-9")}} />
         </div>
         <div>
           <p>Hexadecimal: </p>
-          <input type="text" value={this.state.hexadecimalText} pattern="[0-9A-Fa-f]*" onChange={this.hexadecimalHundleInput.bind(this)}/>
+          <NumberForm value={this.state.hexadecimalText} onChange={event => {this.handleChange(event.target.value, 16, "0-9A-Fa-f")}} />
         </div>
       </div>
     );
+  }
+}
+
+class NumberForm extends React.Component{
+
+  render(){
+    return (
+      <input 
+        type="text"
+        value={this.props.value}
+        onChange={this.props.onChange}
+      />
+    )
   }
 }
 
