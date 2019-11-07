@@ -54,6 +54,7 @@ class FormApp extends Component{
   render(){
     return (
       <div>
+        <h2>Hex Converter</h2>
         <div>
           <p>Binary: </p>
           <NumberForm value={this.state.binaryText} onChange={event => {this.handleChange(event.target.value, 2, "01")}} />
